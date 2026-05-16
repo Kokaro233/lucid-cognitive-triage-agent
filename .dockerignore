@@ -1,0 +1,16 @@
+.git
+.next
+node_modules
+npm-debug.log
+.dockerignore
+.DS_Store
+*.local
+.env
+.env.*
+!.env.example
+README-copy.txt
+coverage
+dist
+build
+out
+.turbo

@@ -1,0 +1,34 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="10" width="236" height="236" rx="54" fill="#06100c"/>
+  <rect x="10.75" y="10.75" width="234.5" height="234.5" rx="53.25" stroke="#a7e8bf" stroke-opacity="0.22" stroke-width="1.5"/>
+  <g filter="url(#outerGlow)">
+    <path
+      d="M72.5 152.3C54.4 142.2 44 125.3 44 105.9C44 67 77.4 42 124.2 42H156.3C202.8 42 232 67.7 232 109.2C232 151.2 200.3 179.8 153.9 179.8H114.6L65.1 210.3C56.9 215.3 47.1 208.5 49.1 199.1L58.1 156.8C63.1 156.7 67.9 155.2 72.5 152.3Z"
+      fill="#071511"
+      stroke="#b9efc9"
+      stroke-width="16"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M72.5 152.3C54.4 142.2 44 125.3 44 105.9C44 67 77.4 42 124.2 42H156.3C202.8 42 232 67.7 232 109.2C232 151.2 200.3 179.8 153.9 179.8H114.6L65.1 210.3C56.9 215.3 47.1 208.5 49.1 199.1L58.1 156.8C63.1 156.7 67.9 155.2 72.5 152.3Z"
+      stroke="#69b986"
+      stroke-width="5"
+      stroke-linejoin="round"
+      opacity="0.9"
+    />
+  </g>
+  <g filter="url(#starGlow)">
+    <path d="M137.2 111.9L145.2 116.8L137.2 121.7L132.3 145.2L127.4 121.7L119.4 116.8L127.4 111.9L132.3 88.4L137.2 111.9Z" fill="#fff7cc"/>
+    <path d="M113.3 130.2L118.1 133.1L113.3 136L110.4 150.1L107.5 136L102.7 133.1L107.5 130.2L110.4 116.1L113.3 130.2Z" fill="#ddffd9" opacity="0.82"/>
+  </g>
+  <defs>
+    <filter id="outerGlow" x="14" y="12" width="248" height="230" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="0" stdDeviation="12" flood-color="#9ee8b2" flood-opacity="0.35"/>
+      <feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <filter id="starGlow" x="78" y="64" width="92" height="110" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#fff1a6" flood-opacity="0.95"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="16" flood-color="#f6d66d" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+</svg>

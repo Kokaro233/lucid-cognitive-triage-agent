@@ -1,0 +1,58 @@
+[
+  {
+    "id": "normal-ai-chat",
+    "language": "zh",
+    "text": "用户：我今天有点焦虑。AI：我们可以先做一个呼吸练习，再整理你的待办事项。",
+    "allowedRiskLevels": ["Green", "Yellow"],
+    "description": "普通 AI 聊天不能误报 Red/Orange。"
+  },
+  {
+    "id": "normal-bitcoin-wallet",
+    "language": "zh",
+    "text": "Bitcoin Wallet 页面显示 BTC 余额、交易记录、资产总值，没有任何人要求转账、缴费、解冻、提供助记词或验证码。",
+    "allowedRiskLevels": ["Green", "Yellow"],
+    "description": "普通钱包页面不能因为数字大而高风险。"
+  },
+  {
+    "id": "whatsapp-security-phishing",
+    "language": "zh",
+    "text": "安全提醒：您的 WhatsApp 账号长期未验证，即将被封禁。请立即登录安全中心完成验证：https://goo.su/i_whatsapp",
+    "allowedRiskLevels": ["Red"],
+    "description": "WhatsApp 假安全中心、封禁威胁、短链接应为 Red。"
+  },
+  {
+    "id": "fake-police-threat",
+    "language": "zh",
+    "text": "我是公安局宋警官，你涉嫌诈骗和洗钱。不要告诉家人，不要搜索。现在配合转账保证金，否则马上拘留。",
+    "allowedRiskLevels": ["Red"],
+    "description": "公安/洗钱/隔离/转账组合必须 Red。"
+  },
+  {
+    "id": "airline-refund-phishing",
+    "language": "en",
+    "text": "Airline Support: Your flight refund expires in 30 minutes. Open this link now to verify your bank card and face scan for instant compensation. Do not close this page.",
+    "allowedRiskLevels": ["Orange", "Red"],
+    "description": "退款钓鱼应为 Orange 或 Red。"
+  },
+  {
+    "id": "investment-hype-page-only",
+    "language": "zh",
+    "text": "NPC2.0 正式上线，开启财富新篇章。页面有倒计时 4d 18h 和交易按钮，但没有看到客服催促、充值、提现解冻、手续费或税费要求。",
+    "allowedRiskLevels": ["Yellow", "Orange"],
+    "description": "只有投资宣传/倒计时，不应直接 Red。"
+  },
+  {
+    "id": "romance-investment-deposit",
+    "language": "zh",
+    "text": "亲爱的你要相信我，跟着我投这个加密货币平台。现在先充值 5000，导师说今晚入金就能翻倍，提现失败的话再补税费就行。",
+    "allowedRiskLevels": ["Red"],
+    "description": "关系信任 + 投资 + 充值/税费应 Red。"
+  },
+  {
+    "id": "phone-call-pressure",
+    "language": "zh",
+    "text": "电话转写：我是银行安全中心，不要挂电话，不要告诉家人。现在按我说的下载软件并提供验证码，否则你的账户会被冻结。",
+    "allowedRiskLevels": ["Red"],
+    "description": "电话中不要挂断/不要告诉家人/验证码应 Red。"
+  }
+]
