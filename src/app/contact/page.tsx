@@ -5,6 +5,7 @@ import { SiteNav } from "@/components/SiteNav";
 
 export default function ContactPage() {
   const { language } = useLanguage();
+  const githubUrl = "https://github.com/Clori001/lucid-cognitive-triage-agent";
   const copy =
     language === "zh"
       ? {
@@ -16,7 +17,9 @@ export default function ContactPage() {
           useCase: "用途：面向反诈骗决策的认知分诊",
           status: "状态：黑客松 MVP / 可试点演示",
           later: "项目入口",
-          items: ["Devpost 提交页。", "GitHub 开源仓库。", "Google Cloud Run 演示地址。"]
+          devpost: "Devpost 提交页。",
+          github: "GitHub 开源仓库",
+          cloudRun: "Google Cloud Run 演示地址。"
         }
       : {
           eyebrow: "Contact",
@@ -28,7 +31,9 @@ export default function ContactPage() {
           useCase: "Use case: Cognitive triage for scam-resistant decisions",
           status: "Status: Hackathon MVP / pilot-ready demo",
           later: "Project links",
-          items: ["Devpost submission page.", "GitHub repository.", "Google Cloud Run demo URL."]
+          devpost: "Devpost submission page.",
+          github: "GitHub repository",
+          cloudRun: "Google Cloud Run demo URL."
         };
 
   return (
@@ -51,9 +56,13 @@ export default function ContactPage() {
         <article className="panel contact-card">
           <h2>{copy.later}</h2>
           <ul>
-            {copy.items.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
+            <li>{copy.devpost}</li>
+            <li>
+              <a href={githubUrl} target="_blank" rel="noreferrer">
+                {copy.github}
+              </a>
+            </li>
+            <li>{copy.cloudRun}</li>
           </ul>
         </article>
       </section>
