@@ -662,9 +662,21 @@ h1 {
   border-bottom: 1px solid var(--line);
 }
 
+.compact-hero {
+  min-height: auto;
+  padding-bottom: clamp(44px, 6vh, 76px);
+}
+
 .page-heading {
   max-width: 980px;
   padding-top: 10vh;
+}
+
+.compact-hero .page-heading {
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: clamp(48px, 6vh, 78px);
+  text-align: center;
 }
 
 .page-heading h1 {
@@ -678,6 +690,11 @@ h1 {
   color: var(--muted);
   font-size: 18px;
   line-height: 1.5;
+}
+
+.compact-hero .page-heading p:not(.eyebrow) {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .page-heading code {
@@ -2270,6 +2287,10 @@ button:disabled {
     margin: 0 auto;
     padding-top: 11vh;
     text-align: center;
+  }
+
+  .compact-hero .page-heading {
+    padding-top: clamp(56px, 5.5vh, 74px);
   }
 
   .page-heading p:not(.eyebrow) {

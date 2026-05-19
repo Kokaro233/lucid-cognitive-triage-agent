@@ -852,16 +852,20 @@ export function LucidConsole() {
     setStep(2);
     setStatus("Reading the message. You do not need to respond yet.");
     try {
+      const submittedImages = payload?.imagesBase64 ?? imagePreviews;
+      const submittedImageMimes = payload?.mimeTypes ?? imageMimes;
+      const sampleId = payload?.demoCaseId ?? activeDemoId ?? undefined;
+      const shouldUsePresetDemo = Boolean(sampleId && !payload?.imageBase64 && submittedImages.length === 0);
       const next = await postJson<AnalyzeResponse>("/api/analyze", {
         text: [payload?.text ?? text, urlInput ? `Suspicious URL submitted by user: ${urlInput}` : ""]
           .filter(Boolean)
           .join("\n\n"),
         imageBase64: payload?.imageBase64,
-        imagesBase64: payload?.imagesBase64 ?? imagePreviews,
+        imagesBase64: submittedImages,
         mimeType: payload?.mimeType,
-        mimeTypes: payload?.mimeTypes ?? imageMimes,
+        mimeTypes: submittedImageMimes,
         outputLanguage: language,
-        demoCaseId: payload?.demoCaseId ?? activeDemoId ?? undefined
+        demoCaseId: shouldUsePresetDemo ? sampleId : undefined
       });
       setResult(next);
       setStatus(`Analysis complete via ${next.source === "gemini" ? "Gemini" : "fallback"}`);
