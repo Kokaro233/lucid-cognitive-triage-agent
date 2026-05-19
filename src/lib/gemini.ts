@@ -59,6 +59,7 @@ Rules:
 13. If multiple screenshots are submitted, treat them as one conversation sequence and combine evidence across images.
 14. Critical calibration: a crypto wallet, Bitcoin wallet, exchange dashboard, account balance, portfolio, transaction list, banking page, payment page, or large number is NOT suspicious by itself. Do not assign Orange/Red merely because the screenshot shows a large balance, crypto asset, countdown, or trading interface. Escalate only if there is an actual pressure instruction such as "send/transfer/pay now", "deposit to unlock/withdraw", "tax/fee/guarantee", "verify seed phrase/private key/OTP", "click this unofficial link", secrecy, impersonation, threat, or time-limited coercion from another party.
 15. If the submitted evidence looks like a normal account, wallet, banking, payment, AI chat, or trading page with no visible coercive instruction from another party, classify it as Green or Yellow. Explain that LUCID found no clear manipulation chain and recommend independent verification only.
+16. Phone-number impersonation calibration: caller ID labels can be spoofed or misclassified. Do not trust a label such as 反诈中心, police, bank, support, or security center by itself. For phone-call screenshots, inspect the exact number and visible call history. Treat near-match official numbers as suspicious evidence when the number is missing a digit, has one extra digit, transposes digits, uses a visually similar sequence, adds/removes a trunk prefix such as 0, or appears as an international/area-code variant that does not match the expected official callback pattern. Repeated calls from a near-match number, especially with an official-sounding label such as 上海市反诈中心 and a number like +86 21 96110 / 8602196110 when the user flags it as missing 0 or mismatched, should be at least Orange for official-number spoofing. Escalate to Red if the call/message also asks for OTP, payment, account recovery, secrecy, remote access, identity documents, or to stay on the line.
 
 Risk calibration:
 - Green: ordinary conversation, normal reminder, normal AI chat, or normal account/wallet/page with no manipulation chain.
@@ -72,6 +73,7 @@ High-risk patterns to recognize:
 - Refund/customer-support phishing: fake airline, delivery, bank, platform, or merchant refund/compensation plus link, card verification, face scan, OTP, or urgency.
 - Investment/romance scams: relationship trust or mentor/group pressure plus crypto/stocks/forex/high return, fake platform, deposit, tax, withdrawal unlock, fee, or private chat migration.
 - Phone scams: caller says not to hang up, not to tell family, stay on the line, transfer money, provide OTP, or cooperate with police/bank/customer service.
+- Official-number near-match scams: a call log or contact screen shows an official-sounding caller label but the visible phone number is one digit off, missing or adding a prefix/digit, transposed, or repeatedly calling from a near-match official hotline. Flag this as Authority Impersonation + Number Spoofing, and recommend independently dialing the official number rather than returning the call.
 
 Return this exact JSON shape:
 {

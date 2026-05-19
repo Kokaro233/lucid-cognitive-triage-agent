@@ -393,5 +393,20 @@ export const samplePatterns: PatternRecord[] = [
     severity: 76,
     recommended_actions: ["Do not invest from countdown pressure", "Verify audit and contract independently", "Do not connect wallet until verified"],
     source: "anonymized_demo_pattern"
+  },
+  {
+    pattern_id: "CN-OFFICIAL-HOTLINE-NEARMATCH-001",
+    scenario: "Official anti-fraud hotline near-match caller spoofing",
+    language: "zh",
+    manipulation_chain: ["Authority Impersonation", "Number Spoofing", "Repeated Calls", "Due Diligence Needed"],
+    phrases: ["上海市反诈中心", "+86 21 96110", "8602196110", "少一个0", "号码错一位"],
+    risk_level: "Orange",
+    severity: 82,
+    recommended_actions: [
+      "Do not call back from the call log",
+      "Independently verify the official hotline number",
+      "Do not share OTP, payment, identity, or remote-access information"
+    ],
+    source: "user_supplied_desensitized_pattern"
   }
 ];
