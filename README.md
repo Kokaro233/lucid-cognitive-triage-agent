@@ -141,40 +141,6 @@ Demo screenshots live in `public/cases/`.
 
 LUCID is a cognitive safety agent for the moment before harm happens. It uses Gemini to analyze scam pressure in screenshots, call transcripts, URLs, and messages, retrieves similar anonymized manipulation patterns from MongoDB Pattern Memory, and helps users pause, verify, and choose safer next actions without notifying the sender.
 
-## 3-Minute Demo Script
-
-**0:00-0:20**  
-Scammers do not only steal money. First, they steal calm. They use fear, urgency, authority, and isolation to make people act before they can verify.
-
-**0:20-0:45**  
-LUCID is a cognitive safety agent for the moment before harm happens. It does not blame users, contact the sender, report automatically, or take action for them. It helps them pause and see the pressure pattern.
-
-**0:45-1:15**  
-Show the low-risk IG check-in. LUCID recognizes a normal scheduling reminder and keeps it Green, proving it is not designed to over-alarm.
-
-**1:15-2:00**  
-Show the airline refund or fake police case. The user uploads screenshots, LUCID enters calm review, Gemini extracts visual and text evidence, and the risk escalates because multiple signals combine.
-
-**2:00-2:35**  
-Show the agent tool chain: MongoDB Pattern Memory retrieves similar anonymized patterns, LUCID explains what increased the risk score, then generates safe actions, a safe reply, and a shareable report.
-
-**2:35-3:00**  
-Show optional anonymized saving. User-submitted content is not saved by default; if the user confirms, only an abstract pattern is saved to help future users.
-
-Key technical lines to say:
-
-- "Gemini performs multimodal scam and manipulation analysis."
-- "MongoDB acts as Pattern Memory for anonymized scam patterns."
-- "The agent retrieves similar patterns before generating safer next actions."
-- "The web app is deployed on Google Cloud Run."
-- "User-submitted content is not saved by default; anonymized pattern saving is opt-in."
-
-Avoid saying:
-
-- "fully encrypted"
-- "guaranteed scam detection"
-- "the AI can prove this is a scam"
-
 ## Deployment
 
 Recommended deployment target: **Google Cloud Run**.
