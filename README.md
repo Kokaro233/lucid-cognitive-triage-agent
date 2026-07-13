@@ -1,5 +1,40 @@
 # LUCID
 
+## Why LUCID?
+
+### The Story Behind LUCID
+
+LUCID was born from a real incident that happened to someone close to me.
+
+A few months ago, one of my friends received a scam message pretending to be from an embassy. The scammer claimed that my friend was involved in a serious criminal case — allegedly forcing someone to commit suicide — and demanded a large "security deposit" of 600,000 RMB to avoid imprisonment.
+
+At first, my friend had doubts. However, the scammers made the situation extremely convincing by providing personal information, including family details and identity-related data. Facing a high-pressure threat combined with the exposure of private information, my friend began to panic.
+
+This experience made me realize something important:
+
+> People are usually rational, but fear and psychological pressure can temporarily disrupt our ability to make rational decisions.
+
+When someone is threatened, their brain naturally enters a survival response. In that moment, they may not need more information — they need a system that helps them slow down, evaluate risks, and return to a rational state.
+
+### Building an AI Agent for Rational Decision-Making
+
+This became the motivation behind LUCID.
+
+I wanted to build an AI agent that could act as a "digital safety layer" between humans and potential scams:
+
+- Automatically analyze suspicious messages, screenshots, URLs, and conversations.
+- Estimate the probability of fraud through a quantified scam risk score.
+- Provide clear explanations instead of simply saying "this is a scam."
+- Help users regain control and make decisions based on evidence rather than fear.
+
+However, security was the first principle of LUCID.
+
+A tool designed to protect users should never become another source of privacy risk. Therefore, LUCID was designed with privacy and safety as core requirements, minimizing unnecessary data exposure while providing intelligent risk assessment.
+
+LUCID is not just a scam detection system.
+
+It is an AI agent designed to help people pause, think clearly, and regain rational judgment when facing manipulation.
+
 **Cognitive Safety Agent for the Moment Before Harm Happens**
 
 LUCID is a Google Cloud Rapid Agent Hackathon project that helps people pause, understand scam pressure, and choose a safer next step before panic-driven decisions. It analyzes user-submitted screenshots, URLs, call transcripts, or pasted messages; detects manipulation chains; retrieves similar anonymized patterns from MongoDB Pattern Memory; and generates user-controlled safety actions.
