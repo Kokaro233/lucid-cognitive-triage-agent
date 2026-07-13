@@ -47,6 +47,16 @@ Try LUCID on Google Cloud Run:
 
 https://lucid-cognitive-triage-agent-220940600627.us-central1.run.app
 
+## Product Demo
+
+### Pause-first cognitive safety experience
+
+![LUCID home page inviting the user to pause before acting](public/screenshots/home-hero-pause.jpg)
+
+### Explainable evidence and emotional-pressure signals
+
+![LUCID evidence highlights with explainable risk contributions and pressure signals](public/screenshots/evidence-highlights.png)
+
 ## What It Does
 
 - Accepts up to five user-submitted screenshots plus optional URL or text context.
