@@ -5,7 +5,7 @@ import { SiteNav } from "@/components/SiteNav";
 
 export default function ContactPage() {
   const { language } = useLanguage();
-  const githubUrl = "https://github.com/Clori001/lucid-cognitive-triage-agent";
+  const githubUrl = "https://github.com/Kokaro233/lucid-cognitive-triage-agent";
   const copy =
     language === "zh"
       ? {
