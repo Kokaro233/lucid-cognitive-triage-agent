@@ -1,5 +1,21 @@
 # LUCID
 
+## Live Demo
+
+Try LUCID on Google Cloud Run:
+
+https://lucid-cognitive-triage-agent-220940600627.us-central1.run.app
+
+## Product Demo
+
+### Pause-first cognitive safety experience
+
+![LUCID home page inviting the user to pause before acting](public/screenshots/home-hero-pause.jpg)
+
+### Explainable evidence and emotional-pressure signals
+
+![LUCID evidence highlights with explainable risk contributions and pressure signals](public/screenshots/evidence-highlights.png)
+
 ## Why LUCID?
 
 ### The Story Behind LUCID
@@ -40,22 +56,6 @@ It is an AI agent designed to help people pause, think clearly, and regain ratio
 LUCID is a Google Cloud Rapid Agent Hackathon project that helps people pause, understand scam pressure, and choose a safer next step before panic-driven decisions. It analyzes user-submitted screenshots, URLs, call transcripts, or pasted messages; detects manipulation chains; retrieves similar anonymized patterns from MongoDB Pattern Memory; and generates user-controlled safety actions.
 
 LUCID is not a fraud verdict engine. It is a cognitive triage agent for the moment when a scammer is trying to isolate the user, rush the user, or make the user too afraid to verify.
-
-## Live Demo
-
-Try LUCID on Google Cloud Run:
-
-https://lucid-cognitive-triage-agent-220940600627.us-central1.run.app
-
-## Product Demo
-
-### Pause-first cognitive safety experience
-
-![LUCID home page inviting the user to pause before acting](public/screenshots/home-hero-pause.jpg)
-
-### Explainable evidence and emotional-pressure signals
-
-![LUCID evidence highlights with explainable risk contributions and pressure signals](public/screenshots/evidence-highlights.png)
 
 ## What It Does
 
