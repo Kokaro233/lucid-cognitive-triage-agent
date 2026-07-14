@@ -1,5 +1,7 @@
 # LUCID
 
+**English** | [中文](README.zh-CN.md)
+
 ## Live Demo
 
 Try LUCID on Google Cloud Run:
