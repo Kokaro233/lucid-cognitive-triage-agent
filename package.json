@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "node .next/standalone/server.js",
     "lint": "next lint",
-    "risk:eval": "node scripts/risk-eval.mjs"
+    "risk:eval": "node scripts/risk-eval.mjs",
+    "test:security": "node --test scripts/prompt-security.test.mjs",
+    "injection:eval": "node scripts/prompt-injection-eval.mjs"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

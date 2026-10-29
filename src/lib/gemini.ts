@@ -1,6 +1,14 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import type { AnalysisResult } from "@/lib/types";
 import { ensureBodyguard } from "@/lib/fallback";
+import {
+  IMAGE_EVIDENCE_NOTE,
+  INJECTION_POLICY,
+  cautiousInvalidOutputResult,
+  restrictModelToolClaims,
+  validateAnalysisResult,
+  wrapUntrustedEvidence
+} from "@/lib/promptSecurity";
 
 const MODEL_NAME = process.env.GOOGLE_MODEL || "gemini-2.5-flash";
 const GOOGLE_API_MODE = process.env.GOOGLE_API_MODE || "vertex_express";
@@ -8,6 +16,15 @@ const GOOGLE_API_MODE = process.env.GOOGLE_API_MODE || "vertex_express";
 export function hasGeminiKey() {
   return Boolean(process.env.GOOGLE_API_KEY);
 }
+
+type AnalysisInput = {
+  text?: string;
+  imageBase64?: string;
+  imagesBase64?: string[];
+  mimeType?: string;
+  mimeTypes?: string[];
+  outputLanguage?: "en" | "zh";
+};
 
 function extractJson(text: string) {
   const trimmed = text.trim();
@@ -21,25 +38,18 @@ function extractJson(text: string) {
   return match[0];
 }
 
-export async function analyzeWithGemini(input: {
-  text?: string;
-  imageBase64?: string;
-  imagesBase64?: string[];
-  mimeType?: string;
-  mimeTypes?: string[];
-  outputLanguage?: "en" | "zh";
-}): Promise<AnalysisResult> {
-  const apiKey = process.env.GOOGLE_API_KEY;
-  if (!apiKey) {
-    throw new Error("Missing GOOGLE_API_KEY.");
-  }
-
+/**
+ * Builds the model request. The trusted policy goes into systemInstruction; the user's text and
+ * screenshots go into the user turn as untrusted evidence. User content is never concatenated
+ * into the system instruction.
+ */
+export function buildAnalysisRequest(input: AnalysisInput) {
   const outputLanguage =
     input.outputLanguage === "zh"
       ? "Simplified Chinese. Keep product names like LUCID, Gemini, MongoDB, Bodyguard Mode in English if needed."
       : "English only. Do not include Chinese translations unless the submitted evidence phrase itself is Chinese.";
 
-  const prompt = `You are LUCID, an AI Cognitive Triage Agent for scam-resistant decisions.
+  const systemInstruction = `You are LUCID, an AI Cognitive Triage Agent for scam-resistant decisions.
 
 Analyze the submitted material. It may be a chat screenshot, website screenshot, wallet/exchange page, SMS, email, pasted URL, pasted conversation, or phone-call transcript.
 
@@ -100,36 +110,48 @@ Return this exact JSON shape:
   "bodyguard_mode": false
 }
 
-Conversation text, if provided:
-${input.text ?? ""}`;
+${INJECTION_POLICY}`;
+
+  const images = input.imagesBase64 ?? (input.imageBase64 ? [input.imageBase64] : []);
+  const mimeTypes = input.mimeTypes ?? (input.mimeType ? [input.mimeType] : []);
+  const userText = [wrapUntrustedEvidence(input.text), images.length > 0 ? IMAGE_EVIDENCE_NOTE : ""]
+    .filter(Boolean)
+    .join("\n\n");
+
+  return { systemInstruction, userText, images, mimeTypes };
+}
+
+function finalizeModelOutput(responseText: string, input: AnalysisInput): AnalysisResult {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(extractJson(responseText));
+  } catch {
+    return cautiousInvalidOutputResult(input.outputLanguage, "not valid JSON");
+  }
+  const checked = validateAnalysisResult(parsed);
+  if (!checked.ok) {
+    console.error("Gemini output failed validation:", checked.errors);
+    return cautiousInvalidOutputResult(input.outputLanguage, checked.errors[0]);
+  }
+  return ensureBodyguard(restrictModelToolClaims(checked.value), input.text);
+}
+
+export async function analyzeWithGemini(input: AnalysisInput): Promise<AnalysisResult> {
+  const apiKey = process.env.GOOGLE_API_KEY;
+  if (!apiKey) {
+    throw new Error("Missing GOOGLE_API_KEY.");
+  }
+
+  const { systemInstruction, userText, images, mimeTypes } = buildAnalysisRequest(input);
 
   if (GOOGLE_API_MODE === "vertex_express") {
-    const responseText = await generateWithVertexExpress(
-      prompt,
-      input.imagesBase64 ?? (input.imageBase64 ? [input.imageBase64] : undefined),
-      input.mimeTypes ?? (input.mimeType ? [input.mimeType] : undefined)
-    );
-    const parsed = JSON.parse(extractJson(responseText)) as AnalysisResult;
-    return ensureBodyguard(
-      {
-        ...parsed,
-        source: "gemini",
-        evidence: parsed.evidence ?? [],
-        tool_timeline: parsed.tool_timeline ?? [],
-        tool_calls: parsed.tool_calls ?? [],
-        agent_actions: parsed.agent_actions ?? [],
-        verification_checklist: parsed.verification_checklist ?? [],
-        manipulation_chain: parsed.manipulation_chain ?? []
-      },
-      input.text
-    );
+    const responseText = await generateWithVertexExpress(systemInstruction, userText, images, mimeTypes, true);
+    return finalizeModelOutput(responseText, input);
   }
 
   const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
-  const parts: Array<string | { inlineData: { data: string; mimeType: string } }> = [prompt];
-  const images = input.imagesBase64 ?? (input.imageBase64 ? [input.imageBase64] : []);
-  const mimeTypes = input.mimeTypes ?? (input.mimeType ? [input.mimeType] : []);
+  const model = genAI.getGenerativeModel({ model: MODEL_NAME, systemInstruction });
+  const parts: Array<string | { inlineData: { data: string; mimeType: string } }> = [userText];
   images.forEach((image, index) => {
     parts.push({
       inlineData: {
@@ -140,47 +162,40 @@ ${input.text ?? ""}`;
   });
 
   const response = await model.generateContent(parts);
-  const raw = response.response.text();
-  const parsed = JSON.parse(extractJson(raw)) as AnalysisResult;
-
-  return ensureBodyguard(
-    {
-      ...parsed,
-      source: "gemini",
-      evidence: parsed.evidence ?? [],
-      tool_timeline: parsed.tool_timeline ?? [],
-      tool_calls: parsed.tool_calls ?? [],
-      agent_actions: parsed.agent_actions ?? [],
-      verification_checklist: parsed.verification_checklist ?? [],
-      manipulation_chain: parsed.manipulation_chain ?? []
-    },
-    input.text
-  );
+  return finalizeModelOutput(response.response.text(), input);
 }
 
-export async function generateTextWithGemini(prompt: string) {
+/** Free-text generation. `systemInstruction` must only contain trusted text written by LUCID. */
+export async function generateTextWithGemini(systemInstruction: string, untrustedContent: string) {
   const apiKey = process.env.GOOGLE_API_KEY;
   if (!apiKey) {
     throw new Error("Missing GOOGLE_API_KEY.");
   }
+  const fullSystemInstruction = `${systemInstruction}\n\n${INJECTION_POLICY}`;
   if (GOOGLE_API_MODE === "vertex_express") {
-    return generateWithVertexExpress(prompt);
+    return generateWithVertexExpress(fullSystemInstruction, untrustedContent);
   }
 
   const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
-  const response = await model.generateContent(prompt);
+  const model = genAI.getGenerativeModel({ model: MODEL_NAME, systemInstruction: fullSystemInstruction });
+  const response = await model.generateContent(untrustedContent);
   return response.response.text().trim();
 }
 
-async function generateWithVertexExpress(prompt: string, imagesBase64?: string[], mimeTypes?: string[]) {
+async function generateWithVertexExpress(
+  systemInstruction: string,
+  userText: string,
+  imagesBase64?: string[],
+  mimeTypes?: string[],
+  jsonOutput = false
+) {
   const apiKey = process.env.GOOGLE_API_KEY;
   if (!apiKey) {
     throw new Error("Missing GOOGLE_API_KEY.");
   }
 
   const parts: Array<{ text: string } | { inlineData: { mimeType: string; data: string } }> = [
-    { text: prompt }
+    { text: userText }
   ];
 
   imagesBase64?.forEach((imageBase64, index) => {
@@ -198,10 +213,11 @@ async function generateWithVertexExpress(prompt: string, imagesBase64?: string[]
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        systemInstruction: { parts: [{ text: systemInstruction }] },
         contents: [{ role: "user", parts }],
         generationConfig: {
           temperature: 0.2,
-          responseMimeType: "application/json"
+          ...(jsonOutput ? { responseMimeType: "application/json" } : {})
         }
       })
     }

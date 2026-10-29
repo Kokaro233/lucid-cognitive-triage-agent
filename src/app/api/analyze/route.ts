@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { analyzeWithGemini } from "@/lib/gemini";
 import { ensureBodyguard, findDemoResult, imageOnlyFallback, searchLocalPatterns } from "@/lib/fallback";
 import { searchPatternsMongo } from "@/lib/mongodb";
+import { cautiousInvalidOutputResult } from "@/lib/promptSecurity";
 import type { AnalysisResult, PatternRecord } from "@/lib/types";
 
 const GENERIC_CHAIN_TERMS = new Set(["urgency", "fear", "due diligence needed", "pressure"]);
@@ -161,6 +162,10 @@ export async function POST(request: Request) {
     }
   } catch (error) {
     console.error("Gemini analyze fallback:", error);
+    // A live analysis was attempted but failed: do not fall back to a keyword demo that may say Green.
+    if (process.env.GOOGLE_API_KEY && !body.demoCaseId) {
+      result = cautiousInvalidOutputResult(body.outputLanguage, "model request failed");
+    }
   }
 
   result = applyOfficialHotlineNearMatchGuard(result, body.text, body.outputLanguage);

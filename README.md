@@ -209,3 +209,7 @@ Required environment variables:
 ## License
 
 MIT
+
+## Prompt injection defense
+
+User-submitted chats, URLs and screenshots are treated as untrusted evidence. Analysis rules are sent as a separate system instruction, model output is validated before use, invalid output falls back to a cautious Yellow result, and the model cannot claim tool actions it did not perform. See [docs/prompt-injection-defense.md](docs/prompt-injection-defense.md) for details, tests and limits.

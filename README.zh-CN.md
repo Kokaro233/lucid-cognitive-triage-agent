@@ -189,3 +189,7 @@ LUCID 是一个在伤害发生前介入的认知安全 Agent。它使用 Gemini 
 ## 许可证
 
 MIT
+
+## Prompt 注入防护
+
+用户提交的聊天、链接和截图一律视为不可信证据。分析规则通过独立的 system instruction 传给模型，模型输出先经过结构校验再使用；输出无效时回退为谨慎的黄色结果，不会默认判为安全；模型也不能声称执行了它并未执行的工具操作。机制、测试与局限见 [docs/prompt-injection-defense.md](docs/prompt-injection-defense.md)。
